@@ -17,14 +17,21 @@ function coordsFinder(initialString: string, queryString: string) {
 
   for (let i = 0; i < queryString.length; i += 1) {
     for (let k = 0; k < queryString.length; k += 1) {
+      //Try to find the first character in matrix
       if (matrixArray[i][k] === queryString[findedCharsCount]) {
         findedCharsCount += 1;
 
         savedCoords.push({ firstCoord: i, secondCoord: k });
 
+        //When we find the first, we check next character with rule:
+        //every next character of word can be placed just in the neighbor cell: on the top, on the bottom,
+        // or on the left or on the right from the cell with previous character
+
         for (let j = findedCharsCount; j < queryString.length; j += 1) {
+          //Teake coords of the last charater we add
           const currentCoord = savedCoords[j - 1];
 
+          //Check coords, we make "" default coords if they can't exist
           if (currentCoord.firstCoord === 0) {
             topCoord = "";
           } else {
@@ -59,6 +66,7 @@ function coordsFinder(initialString: string, queryString: string) {
               ];
           }
 
+          //Save coords
           switch (queryString[j]) {
             case topCoord:
               savedCoords.push({
