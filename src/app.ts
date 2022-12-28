@@ -1,9 +1,51 @@
-const initialString = "QLGNAEKIRNRIGEAE";
+//"QLGNAEKIRNRIGEAE" Initial string
+//KING word
 
-["Q", "L", "G", "N"];
-["A", "E", "K", "I"];
-["R", "N", "R", "I"];
-["G", "E", "A", "E"];
+//["Q", "L", "G", "N"];
+//["A", "E", "K", "I"];
+//["R", "N", "R", "I"];
+//["G", "E", "A", "E"];
+
+const form = document.querySelector(".find_form") as HTMLFormElement;
+const stringField = document.getElementById("stringField") as HTMLInputElement;
+const wordField = document.getElementById("wordField") as HTMLInputElement;
+const result = document.querySelector(".result") as HTMLElement;
+
+const formData: { stringField: string; wordField: string } = {
+  stringField: "",
+  wordField: "",
+};
+
+//Add listeners to inputs
+stringField.addEventListener("input", () => {
+  formData.stringField = stringField.value;
+});
+
+wordField.addEventListener("input", () => {
+  formData.wordField = wordField.value;
+});
+
+//Use coordsFinder on sumbit and show coords
+form.addEventListener("submit", onSubmit);
+
+function onSubmit(e: Event) {
+  e.preventDefault();
+  if (formData.stringField === "" || formData.wordField === "") {
+    return alert("Please fill in all the fields!");
+  }
+
+  const resultCoords = coordsFinder(formData.stringField, formData.wordField);
+  const textCoords = resultCoords.map((item) => {
+    return `(${item.firstCoord.toString()}, ${item.secondCoord.toString()})=>`;
+  });
+
+  result.textContent = textCoords.toString();
+
+  //Reset form after submit
+  form.reset();
+  formData.stringField = "";
+  formData.wordField = "";
+}
 
 function coordsFinder(initialString: string, queryString: string) {
   const matrixArray: string[][] = matrixCreate(initialString);
@@ -130,6 +172,3 @@ function matrixCreate(initialString: string) {
 
   return matrixArray;
 }
-
-coordsFinder(initialString, "KING");
-const coords = coordsFinder(initialString, "KING");
